@@ -12,6 +12,11 @@
 (function () {
 
     "use strict";
+    /**
+     * Videojs plugin.
+     * Listens for events and send them to parent frame to be logged in Open edX tracking log
+     * @param {Object} options - Plugin options passed in at initialization time.
+     */
     function XBlockEventPlugin(options) {
 
         var previousTime = 0;
@@ -92,7 +97,6 @@
         this.onHideCaptions = function () {
             this.log('closed_captions.hidden', {current_time: this.currentTime()});
         };
-
         this.logEvent = function (event_type) {
             if (this.events.indexOf(event_type) == -1 || typeof this[event_type] !== 'function') {
                 return;
@@ -111,7 +115,7 @@
                 this.logEvent('onSpeedChange')
             })
             .on('play', function () {
-                this.logEvent('onPlay')
+              this.logEvent('onPlay');
             })
             .on('pause', function () {
                 this.logEvent('onPause')
@@ -123,7 +127,7 @@
                 this.logEvent('onSeek')
             });
 
-        /* TODO Catch events bellow after theirs implementation
+        /* TODO Add following events forwarding to Open edX when respective features are implemented
          onShowLanguageMenu, onHideLanguageMenu, onShowTranscript, onHideTranscript, onShowCaptions, onHideCaptions
          */
         this.log = function (eventName, data) {
@@ -131,7 +135,7 @@
             data['eventType'] = 'xblock-video.' + eventName;
             parent.postMessage({
                 'action': 'analytics',
-                'event_data': data,
+                'info': data,
                 'xblockUsageId': xblockUsageId
             }, document.location.protocol + "//" + document.location.host);
         };

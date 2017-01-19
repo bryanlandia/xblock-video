@@ -30,7 +30,8 @@ setup(
     ],
     install_requires=[
         'XBlock',
-        'xblock-utils'
+        'xblock-utils',
+        'pycaption<1',  # The latest Python 2.7 compatible version
     ],
     entry_points={
         'xblock.v1': [
@@ -43,5 +44,5 @@ setup(
             'dummy-player = video_xblock.backends.dummy:DummyPlayer',
         ]
     },
-    package_data=package_data("video_xblock", ["static", "public"]),
+    package_data=package_data("video_xblock", ["static",]),
 )
